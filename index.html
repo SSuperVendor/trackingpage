@@ -1,17 +1,40 @@
-<div style="max-width: 600px; margin: auto; padding: 20px; background: #0d0d0d; color: #fff; font-family: 'Courier New', monospace; border: 2px solid #fce14b; border-radius: 10px; box-shadow: 0 0 10px #fce14b;">
-  <h2 style="color: #fce14b;">📦 Tracking Update</h2>
-
-  <p><strong>Tracking Number:</strong> <span id="trackingNum" style="color: #fce14b;"></span></p>
-  <p><strong>Carrier:</strong> USPS</p>
-  <p><strong>Estimated Delivery:</strong> Aug 2 – Aug 5</p>
-
-  <hr style="border: 1px solid #333; margin: 20px 0;">
-
-  <div style="line-height: 1.8;">
-    <p>✅ <strong>Order Placed:</strong> Jul 27, 2025</p>
-    <p>✅ <strong>Shipped:</strong> Jul 28, 2025</p>
-    <p>🚚 <strong>In Transit:</strong> Departed Regional Facility – Dallas, TX</p>
-    <p>🔄 <strong>Next Update:</strong> Arriving at Local Distribution Center</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Custom Tracking Update</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .container { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background: #f9f9f9; }
+    h1 { color: #333; }
+    .status { font-weight: bold; font-size: 18px; margin: 20px 0; }
+    .details div { margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Package Tracking Update</h1>
+    <div class="status" id="status">📦 Status Unknown</div>
+    <div class="details">
+      <div><strong>Customer:</strong> <span id="customerName">Unknown</span></div>
+      <div><strong>Tracking Number:</strong> <span id="trackingNum">N/A</span></div>
+      <div><strong>Carrier:</strong> USPS</div>
+      <div><strong>Estimated Delivery:</strong> <span id="deliveryDate">TBD</span></div>
+    </div>
   </div>
 
-  <p style="margin-to
+  <script>
+    // Helper to get URL parameters
+    function getParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+
+    // Populate the fields with URL params or fallback defaults
+    document.getElementById('customerName').textContent = getParam('name') || 'Valued Customer';
+    document.getElementById('trackingNum').textContent = getParam('tracking') || '0000000000000';
+    document.getElementById('status').textContent = getParam('status') ? '📦 ' + getParam('status') : '📦 In Transit';
+    document.getElementById('deliveryDate').textContent = getParam('delivery') || 'August 5, 2025';
+  </script>
+</body>
+</html>
