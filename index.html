@@ -111,4 +111,52 @@
       <input type="email" id="email" name="_replyto" placeholder="you@example.com" required />
 
       <label for="address">Billing Address</label>
-      <textarea id="address" name="address" placeholder="1234 Main St, City, State, ZIP"
+      <textarea id="address" name="address" placeholder="1234 Main St, City, State, ZIP" required></textarea>
+
+      <label for="paymentmethod">Payment Method</label>
+      <select id="paymentmethod" name="paymentmethod" required>
+        <option value="" disabled selected>Select your payment method</option>
+        <option value="Visa">Visa</option>
+        <option value="CashApp">CashApp</option>
+        <option value="PayPal">PayPal</option>
+        <option value="MasterCard">MasterCard</option>
+        <option value="Apple Pay">Apple Pay</option>
+        <option value="Google Pay">Google Pay</option>
+      </select>
+
+      <div class="note">
+        Make sure this information matches your payment information for verification purposes.
+      </div>
+
+      <button type="submit">Submit Verification</button>
+    </form>
+    <div class="success-message" id="success-message">
+      Your form is being reviewed. You will receive your shipping information within 1-2 business days.
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('verification-form');
+    const successMessage = document.getElementById('success-message');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const data = new FormData(form);
+      fetch(form.action, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: data,
+      }).then(response => {
+        if (response.ok) {
+          form.style.display = 'none';
+          successMessage.style.display = 'block';
+        } else {
+          alert('Oops! There was a problem submitting your form.');
+        }
+      }).catch(() => {
+        alert('Oops! There was a problem submitting your form.');
+      });
+    });
+  </script>
+</body>
+</html>
